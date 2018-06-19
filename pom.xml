@@ -50,18 +50,24 @@
             <email>shikhar@schmizz.net</email>
             <organization/>
         </developer>
+        <developer>
+            <name>Christoph Theis</name>
+            <id>chtheis</id>
+            <email>theis@ttm.co.at</email>
+            <organization/>
+        </developer>
     </developers>
 
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
+            <version>[1.6.1,)</version>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk16</artifactId>
-            <version>1.45</version>
+            <version>[1.45,)</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -73,7 +79,7 @@
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jzlib</artifactId>
-            <version>1.0.7</version>
+            <version>[1.0.7,)</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
