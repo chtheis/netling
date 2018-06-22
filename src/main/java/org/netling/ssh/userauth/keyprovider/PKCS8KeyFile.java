@@ -24,7 +24,12 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import org.bouncycastle.openssl.EncryptionException;
-import org.bouncycastle.openssl.PEMReader;
+import org.bouncycastle.openssl.PEMDecryptorProvider;
+import org.bouncycastle.openssl.PEMEncryptedKeyPair;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.bouncycastle.openssl.jcajce.JcePEMDecryptorProviderBuilder;
 import org.netling.io.Util;
 import org.netling.ssh.common.KeyType;
 import org.netling.ssh.userauth.password.PasswordFinder;
@@ -104,14 +109,22 @@ public class PKCS8KeyFile
             throws IOException {
         KeyPair kp = null;
         org.bouncycastle.openssl.PasswordFinder pFinder = makeBouncyPasswordFinder();
-        PEMReader r = null;
+        PEMParser r = null;
         Object o = null;
+        
         try {
             for (; ;) {
                 // while the PasswordFinder tells us we should retry
                 try {
-                    r = new PEMReader(new InputStreamReader(new FileInputStream(resource.getDetail())), pFinder);
+                    PEMDecryptorProvider decProv = new JcePEMDecryptorProviderBuilder().build(pFinder == null ? null : pFinder.getPassword());
+                    JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
+                    
+                    r = new PEMParser(new InputStreamReader(new FileInputStream(resource.getDetail())));
                     o = r.readObject();
+                    if (o instanceof PEMEncryptedKeyPair)
+                        o = converter.getKeyPair(((PEMEncryptedKeyPair) o).decryptKeyPair(decProv));  
+                    else if (o instanceof PEMKeyPair)
+                        o = converter.getKeyPair((PEMKeyPair) o);
                 } catch (EncryptionException e) {
                     if (pwdf.shouldRetry(resource))
                         continue;

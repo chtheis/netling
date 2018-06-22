@@ -22,7 +22,7 @@ import org.netling.ssh.userauth.password.PasswordFinder;
 import org.netling.ssh.userauth.password.PasswordUtils;
 import org.netling.ssh.userauth.password.Resource;
 import org.netling.ssh.util.KeyUtil;
-import org.apache.sshd.common.util.SecurityUtils;
+import org.apache.sshd.common.util.security.SecurityUtils;
 import org.junit.Before;
 import org.junit.Test;
 

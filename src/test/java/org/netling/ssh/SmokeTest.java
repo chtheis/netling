@@ -18,7 +18,7 @@ package org.netling.ssh;
 import org.netling.ssh.transport.TransportException;
 import org.netling.ssh.userauth.UserAuthException;
 import org.netling.ssh.util.BogusPasswordAuthenticator;
-import org.apache.sshd.SshServer;
+import org.apache.sshd.server.SshServer;
 import org.apache.sshd.common.keyprovider.FileKeyPairProvider;
 import org.junit.After;
 import org.junit.Before;
@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.assertTrue;
 
@@ -51,7 +52,7 @@ public class SmokeTest {
 
         sshd = SshServer.setUpDefaultServer();
         sshd.setPort(port);
-        sshd.setKeyPairProvider(new FileKeyPairProvider(new String[]{hostkey}));
+        sshd.setKeyPairProvider(new FileKeyPairProvider(Paths.get(hostkey)));
         // sshd.setShellFactory(new EchoShellFactory());
         sshd.setPasswordAuthenticator(new BogusPasswordAuthenticator());
         sshd.start();

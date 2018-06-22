@@ -18,7 +18,7 @@
  */
 package org.netling.ssh.util;
 
-import org.apache.sshd.server.PasswordAuthenticator;
+import org.apache.sshd.server.auth.password.PasswordAuthenticator;
 import org.apache.sshd.server.session.ServerSession;
 
 /** Successfully authenticates when username == password. */
